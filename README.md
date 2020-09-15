@@ -1,32 +1,50 @@
 # Lightning-Out-Demo  
-Complete source code to showcase using Lightning component in node.js (External websites) by using Lightning Out. It shows how to enable CORS and SSL in Node.js with Video and complete source code.
+Follow the below steps to overcome the challenges mentioned above and to use your Lightning Components on external application (i.e. in our example is localhost). 
 
-![Jitendra Zaa Blog](http://www.jitendrazaa.com/blog/wp-content/uploads/2017/04/Show-Lightning-Component-in-Node.js-using-Lightning-Out-1024x561.png) 
 
-**[Click here for Youtube Video demo](https://www.youtube.com/watch?v=q9g7rP3OWRA)**
 
-**[Blog post explaining code](http://www.jitendrazaa.com/blog/salesforce/use-lightning-components-on-external-websites-lightning-out/)**
+       Step 1: Generate X.509 Certificate using OpenSSL 
 
-# Steps to run
-### Step 1
-Create below Lightning application in your Salesforce instance and name it as **LightningOutDemo**
+            First, you will have to install OpenSSL. After installing OpenSSL, generate a valid Self-Signed Certificate for localhost development.
 
-`<aura:application access="Global" extends="ltng:outApp">`
+        Step 2: Create Node.js application  
 
-`<aura:dependency resource="forceChatter:feed" type="COMPONENT" />`
+            First, install the Node Js library in your system.
 
-`</aura:application>`
+Allow CORS in this application. 
+Use SSL with this application.
+        Step 3: Whitelists the localhost URL in CORS from Salesforce. 
+            The Same-Origin-Policy restricts the browser to make a request to/from the same domain. 
 
-### Step 2
-Create Connected App in your Salesforce instance with callback URL - `https://localhost:8081/`
-Copy consumer secret created in connected app and update clientId variable defined in [OAuth.js](https://github.com/JitendraZaa/Lightning-Out-Demo/blob/master/client/js/OAuth.js) file.
 
-### Step 3 
-Save `https://localhost:8081` in **CORS** setting of Salesforce.
 
-### Step 4
-Run `npm install` command in the directory where this code is downloaded. It will download all the required node modules.
-Then run `npm start`, it will start the server
 
-### Step 5
-Navigate to `https://localhost:8081/` in your browser and you would see **Lightning Out** in Action
+
+
+      Step 4: Create a Connected App in Salesforce  
+            From many ways to authenticate Salesforce from an external website, let's use the most secure way which is OAuth. To use OAuth, you need to create a Connected App. Connected App provides different types of permission settings to allow external websites to use after authentication. Do not forget to set the callback URL in your Connected App. 
+ 
+
+
+
+ 
+
+      Step 5: Create Lightning Dependency App  
+
+        To make this app accessible outside of Salesforce, make sure you do not forget the below points, 
+
+The Lightning App must be globally accessible, which means that access must be defined as global. 
+The ltng:outApp must be extended to allow you to use it outside the lightning framework / Salesforce. 
+To make use of the Aura component as part of Lightning Out, it should be defined as aura:dependency. 
+
+<aura:application access="Global" extends="ltng:outApp">
+      <aura:dependency resource="c:LCSearchFirst" />     
+      <aura:dependency resource="c:LCSearchDataTable"/>  
+</aura:application> 
+
+
+        Step 6: Include Lightning Out JavaScript 
+
+            To use the Lightning component in your external application, you need to import Lightning             out JavaScript, so use the below resource in a script tag :    
+
+https://your-domain.lightning.force.com/lightning/lightning.out.js 
